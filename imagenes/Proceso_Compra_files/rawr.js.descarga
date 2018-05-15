@@ -1,0 +1,64 @@
+(function ($) {
+  Drupal.behaviors.rawr = {
+    attach: function(context, settings) {
+      if ($('#console',context).length > 0) {
+        if ($('#console .status').length > 0) {
+          if ($('#console .status').children('ul li').length > 0) {
+            $('#console .status ul li').each(function(){
+              rawr_notify($(this).html(), 'status');
+            });
+          }
+          else {
+            rawr_notify($('#console .status').html(), 'status');
+          }
+        }
+        if ($('#console .warning',context).length > 0) {
+          if ($('#console .warning').children('ul li').length > 0) {
+            $('#console .warning ul li').each(function(){
+              rawr_notify($(this).html(), 'warning');
+            });
+          }
+          else {
+            rawr_notify($('#console .warning').html(), 'warning');
+          }
+        }
+        if ($('#console .error',context).length > 0) {
+          if ($('#console .error').children('ul li').length > 0) {
+            $('#console .error ul li').each(function(){
+              rawr_notify($(this).html(), 'error');
+            });
+          }
+          else {
+            rawr_notify($('#console .error').html(), 'error');
+          }
+        }
+      }
+				}
+}
+
+
+function rawr_notify(text, type) {
+    var title;
+    var sticky;
+    switch (type) {
+      case 'status':
+        title = 'Status';
+        sticky = false;
+        image = Drupal.settings.basePath + Drupal.settings.rawrImageFolder + 'status.png';
+        break;
+      case 'warning':
+        title = 'Warning';
+        sticky = false;
+        image = Drupal.settings.basePath + Drupal.settings.rawrImageFolder  + 'warning.png';
+        break;
+      case 'error':
+        title = 'Error';
+        sticky = true;
+        image = Drupal.settings.basePath + Drupal.settings.rawrImageFolder + 'error.png';
+        break;
+    }
+
+    $.gritter.add({ title: title, text: text, image: image, sticky: sticky, time: ''});
+  }
+  
+})(jQuery);

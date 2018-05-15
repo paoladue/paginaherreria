@@ -1,0 +1,853 @@
+(function ($) {
+
+$(window).load(function() {
+	$(".loader").fadeOut("slow");
+});
+
+jQuery(document).ready(function($) {
+          
+//Categorias Home
+$(window).load(function(){
+	var $container = $('.view-categorias-home .view-content');
+	// initialize
+	$container.masonry({
+	itemSelector: '.views-row',
+	columnWidth: 18,
+	isAnimated: true
+	});
+});
+
+//Menu Home
+$('body.front .header').prepend('<div class="menu_bar"></div>');
+var contador = 1;
+$('.menu_bar').click(function(){
+        if(contador == 1){
+            $('body.front .menuprincipal').animate({
+            top: '96px'
+        });
+        contador = 0;
+    } else {
+        contador = 1;
+        $('body.front .menuprincipal').animate({
+            top: '-1000%'
+        });
+    }
+});
+
+$('body.front .menuprincipal ul.menu ul').hide();
+$('body.front .menuprincipal ul.menu > li').click(function(e) {
+                e.stopPropagation();
+                var $el = $('ul',this);
+                $('body.front .menuprincipal ul.menu > li > ul').not($el).slideUp();
+                $el.stop(true, true).slideToggle(400);
+});
+$('body.front .menuprincipal ul.menu li.expanded > a').each( function(){
+                var linkpadre = $(this).attr('href');
+                $(this).attr('atribute',linkpadre);
+});
+$('body.front .menuprincipal ul.menu li.expanded > a').attr('href', '#');
+$('body.front .menuprincipal ul.menu li.expanded > a').dblclick( function(){
+                var irurl = $(this).attr('atribute');
+                window.location.href = "https://www.lademoteca.com"+irurl;
+});
+
+
+
+//Producto Nodo
+if($('.node-product .field-name-field-su-producto-contiene-atrib .field-item').text() == "Si"){
+if($('.node-product .field-name-field-atributo-contiene-imagenes .field-item').text() == "Si"){
+//Muestra la primera galeria
+$('.node-product .field-name-field-atributo-del-producto').show();
+$(".node-product .field-name-field-atributo-del-producto").find(".field-item").not($(".node-product .field-name-field-atributo-del-producto .field-item .field-item")).hide().addClass('item-padre');
+$(".node-product .field-name-field-atributo-del-producto").find(".field-item:first").not($(".node-product .field-name-field-atributo-del-producto .field-item:first .field-item")).show();    
+
+$('.node-product .add-to-cart .attributes .attribute select').change( function(){
+var codigoseleccionado = $('option:selected', this).text();
+$('.node-product .field-name-field-atributo-del-producto .item-padre').each( function(){
+var codigosli =$('.field-name-field-codigo-sku-atributo .field-item', this).text();
+if ( codigoseleccionado == codigosli){
+$(".node-product .field-name-field-atributo-del-producto").find(".field-item").not($(".node-product .field-name-field-atributo-del-producto .field-item .field-item")).hide();
+$(this).show();
+}
+});
+});
+
+Drupal.behaviors.mycustomgallery = {
+attach: function(context, settings) {
+$('.node-product .add-to-cart .attributes .attribute select').change( function(){
+var codigoseleccionado = $('option:selected', this).text();
+$('.node-product .field-name-field-atributo-del-producto .item-padre').each( function(){
+var codigosli =$('.field-name-field-codigo-sku-atributo .field-item', this).text();
+if ( codigoseleccionado == codigosli){
+$(".node-product .field-name-field-atributo-del-producto").find(".field-item").not($(".node-product .field-name-field-atributo-del-producto .field-item .field-item")).hide();
+$(this).show();
+}
+});
+});
+}
+};
+}
+else if($('.node-product .field-name-field-atributo-contiene-imagenes .field-item').text() == "No"){
+$('.node-product .field-name-field-galeria-de-imagenes').show();
+}
+} else if($('.node-product .field-name-field-su-producto-contiene-atrib .field-item').text() == "No"){
+$('.node-product .field-name-field-galeria-de-imagenes').show();
+}
+
+Drupal.behaviors.myCustomJS = {
+				attach: function(context, settings) {
+								var costo = $('.node-product .product-info.cost .uc-price').text();
+								var rescosto = parseInt(costo.substring(1));
+								var oferta = $('.node-product .product-info.display-price .uc-price').text();
+								var resoferta = parseInt(oferta.substring(1));
+								
+								if (rescosto == resoferta){
+								$('.node-product .product-info.cost').addClass('nooferta');
+								$('.node-product .product-info.display-price').hide();
+								} else{
+								$('.node-product .product-info.cost').addClass('oferta');
+								$('.node-product .product-info.display-price').addClass('oferta');
+								}
+				}
+};
+var costo = $('.node-product .product-info.cost .uc-price').text();
+var rescosto = parseInt(costo.substring(1));
+var oferta = $('.node-product .product-info.display-price .uc-price').text();
+var resoferta = parseInt(oferta.substring(1));
+
+if (rescosto == resoferta){
+$('.node-product .product-info.cost').addClass('nooferta');
+$('.node-product .product-info.display-price').hide();
+} else{
+$('.node-product .product-info.cost').addClass('oferta');
+$('.node-product .product-info.display-price').addClass('oferta');
+}
+
+//Categorias
+Drupal.behaviors.myCustomJS2 = {
+				attach: function(context, settings) {
+								$('.view-productos-de-categoria .view-content .views-row').each( function(){
+												var costo = $('.views-field-cost .uc-price', this).text();
+												var rescosto = parseInt(costo.substring(1));
+												var oferta = $('.views-field-sell-price .uc-price', this).text();
+												var resoferta = parseInt(oferta.substring(1));
+												
+												if (rescosto == resoferta){
+												$('.views-field-cost', this).addClass('nooferta');
+												$('.views-field-sell-price', this).hide();
+												} else{
+												$('.views-field-cost', this).addClass('oferta');
+												$('.views-field-sell-price', this).addClass('oferta');
+												}
+								});
+								$('.view-productos-de-categoria .view-content .views-row .views-field-addtocartlink .field-content .close').remove();
+								$('.view-productos-de-categoria .view-content .views-row .views-field-addtocartlink .field-content').prepend('<div class="close">X</div>');
+								$('.view-productos-de-categoria .view-content .views-row .views-field-nothing').click( function(){
+								$('.views-field-addtocartlink').removeClass('lightbox-activo lightbox-inactivo');
+								$(this).parent().find('.views-field-addtocartlink').addClass('lightbox-activo');
+								});
+								$('.view-productos-de-categoria .view-content .views-row .close').on('click', function(){
+								$('.views-field-addtocartlink.lightbox-activo').addClass('lightbox-inactivo');
+								$('.views-field-addtocartlink').removeClass('lightbox-activo');
+								});
+				}
+};
+$('.view-productos-de-categoria .view-content .views-row').each( function(){
+var costo = $('.views-field-cost .uc-price', this).text();
+var rescosto = parseInt(costo.substring(1));
+var oferta = $('.views-field-sell-price .uc-price', this).text();
+var resoferta = parseInt(oferta.substring(1));
+
+if (rescosto == resoferta){
+$('.views-field-cost', this).addClass('nooferta');
+$('.views-field-sell-price', this).hide();
+} else{
+$('.views-field-cost', this).addClass('oferta');
+$('.views-field-sell-price', this).addClass('oferta');
+}
+});
+
+$('.view-productos-de-categoria .view-content .views-row .views-field-addtocartlink .field-content').prepend('<div class="close">X</div>');
+$('.view-productos-de-categoria .view-content .views-row .views-field-nothing').click( function(){
+$('.views-field-addtocartlink').removeClass('lightbox-activo lightbox-inactivo');
+$(this).parent().find('.views-field-addtocartlink').addClass('lightbox-activo');
+});
+$('.view-productos-de-categoria .view-content .views-row .close').on('click', function(){
+$('.views-field-addtocartlink.lightbox-activo').addClass('lightbox-inactivo');
+$('.views-field-addtocartlink').removeClass('lightbox-activo');
+});
+
+
+//Profile
+Drupal.behaviors.myCustomJS3 = {
+				attach: function(context, settings) {
+								var role = $('.profile .field-name-field-tipo-de-cuenta .field-item').text();
+								if(role == 'Proveedor'){
+								$('body').addClass('perfil-proveedor');
+								}
+								$('.view-id-productos .view-content .views-row').each( function(){
+								var costo = $('.views-field-cost .uc-price', this).text();
+								var rescosto = parseInt(costo.substring(1));
+								var oferta = $('.views-field-sell-price .uc-price', this).text();
+								var resoferta = parseInt(oferta.substring(1));
+								
+								if (rescosto == resoferta){
+								$('.views-field-cost', this).addClass('nooferta');
+								$('.views-field-sell-price', this).hide();
+								} else{
+								$('.views-field-cost', this).addClass('oferta');
+								$('.views-field-sell-price', this).addClass('oferta');
+								}
+								});
+				}
+}
+var role = $('.profile .field-name-field-tipo-de-cuenta .field-item').text();
+if(role == 'Proveedor'){
+$('body').addClass('perfil-proveedor');
+}
+$('.view-id-productos .view-content .views-row').each( function(){
+var costo = $('.views-field-cost .uc-price', this).text();
+var rescosto = parseInt(costo.substring(1));
+var oferta = $('.views-field-sell-price .uc-price', this).text();
+var resoferta = parseInt(oferta.substring(1));
+
+if (rescosto == resoferta){
+$('.views-field-cost', this).addClass('nooferta');
+$('.views-field-sell-price', this).hide();
+} else{
+$('.views-field-cost', this).addClass('oferta');
+$('.views-field-sell-price', this).addClass('oferta');
+}
+});
+
+//Carretilla de Compra
+$('#block-user-login .content').prepend('<div class="close-login">X</div>');
+$('#block-user-login .content').prepend('<h1 class="titulocart"><div class="contenidotitlepage">Mi Cuenta</div></h1><p class="description">Bienvenido es un gusto recibirte!</p>');
+$('#block-user-login .content #ajax-register-user-login-block-wrapper #user-login-form').prepend('<h1>Cliente Frecuente</h1>');
+$('#block-user-login .content #ajax-register-user-login-block-wrapper').append('<div class="invitado"><h1>Invitado</h1><p class="invitado-desc">Puedes comprar sin necesidad de registrarte!</p> <a class="continuar-compra" href="/cart/checkout">Realizar Compra</a></div>');
+
+$('#checkout_anonymous').click( function(){
+	$('#block-user-login').addClass('activologin');
+	$('.login').show();
+	$('body').css({ "position": "fixed" });
+});
+
+$(document).on('click', '.close-login', function(e) {
+	$('#block-user-login').removeClass('activologin');
+	$('.login').hide();
+	$('body').css({ "position": "relative" });
+});
+
+//Panel Checkout Datos de envio
+$('.uc-cart-checkout-form .field-delivery_ucxf_hora_envio').addClass('datos-envio');
+$('.uc-cart-checkout-form .field-delivery_ucxf_fecha_envio').addClass('datos-envio');
+$('.datos-envio').wrapAll("<div class='datos-envio-padre' />");
+$('.datos-envio-padre').prepend('<h1>Tipo de informaci&oacute;n de envio</h1>')
+$('.datos-envio-padre').append('<div style="height: 0;" class="nosepuede">Lo sentimos, no puede realizar pedidos para hoy despues de las 11am.</div><div class="description"><p>Todos los pedidos cuenta con entrega a domicilio gratis, con la excepci&oacute;n de las siguientes situaciones:</p><ul><li>Compra menor a Q200 se cobrar&aacute; Q20 de entrega de mensajer&iacute;a.</li><li>Entrega el mismo d&iacute;a, se cobrar&aacute; Q50. Las entregas el mismo d&iacute;a podr&aacute;n ser realizadas si el pedido es hecho antes de las 10am de ese mismo d&iacute;a.</li><li>Nuestro servicio a domicilio tiene cobertura en la ciudad capita, Fraijanes (hasta Km. 20) y Santa Catarina Pinula. No contamos con servicio a Villa Nueva o Mixco.</li></ul></div>');
+
+
+//Menu
+var height = $( window ).height() - 100;
+$('#area-menu').css({ "height": height+"px" });
+$('#block-system-main-menu ul.menu ul').hide();
+$('#block-system-main-menu ul.menu > li').click(function(e) {
+				e.stopPropagation();
+				var $el = $('ul',this);
+				$('#block-system-main-menu ul.menu > li > ul').not($el).slideUp();
+				$el.stop(true, true).slideToggle(400);
+});
+$('#block-system-main-menu ul.menu li.expanded > a').each( function(){
+				var linkpadre = $(this).attr('href');
+				$(this).attr('atribute',linkpadre);
+});
+$('#block-system-main-menu ul.menu li.expanded > a').attr('href', '#');
+$('#block-system-main-menu ul.menu li.expanded > a').dblclick( function(){
+				var irurl = $(this).attr('atribute');
+				window.location.href = "https://www.lademoteca.com"+irurl;
+});
+
+
+/*************Condiciones de Compra**************/
+//Calendario
+$.tools.dateinput.localize("es", {
+				months: 'Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre',
+				shortMonths:  'Ene,Feb,Mar,Abr,May,Jun,Jul,Ago,Sep,Oct,Nov,Dic',
+				days:         'Domingo,Lunes,Martes,Miercoles,Jueves,Viernes,Sabado',
+				shortDays:    'Dom,Lun,Mar,Mie,Jue,Vie,Sab'
+});
+function noSunday(date){
+				var day = date.getDay();
+				return [(day > 0), ''];
+};
+
+$("#edit-panes-delivery-address-delivery-ucxf-fecha-envio").dateinput({
+				format: 'dd-mm-yyyy',
+				min: -1,
+				offset: [5, 10],
+				speed: 'fast',
+				firstDay: 0,
+				value: '',
+				lang: 'es',
+				"onShow": function(event) {
+					var calendar = this.getCalendar();
+					var conf = this.getConf();
+					var classes = conf.css.off + ' ' + conf.css.disabled;
+					function disableWeekends() {
+									var weeks = calendar.find('.calweek');
+									weeks.find('a:first, a:last').addClass(classes);
+									
+									var month = calendar.find('#caltitle');
+									
+									if( $('#caltitle').text() == 'Febrero 2016'){
+													$('a[href=#6],a[href=#13],a[href=#7],a[href=#14]').removeClass('caloff caldisabled');
+									}
+					}
+					calendar.find('#calprev, #calnext').click(disableWeekends);
+					disableWeekends();
+				}
+});
+//Hora
+var pathname = window.location.pathname;
+if(pathname == "/cart/checkout"){
+				//Valida que el dia seleccionado no sea fin de semana
+				var fechahoy = new Date();
+				var n = fechahoy.getDay();
+				if(n == 0){
+					fechahoy.setDate(fechahoy.getDate() + 1);
+					$("#edit-panes-delivery-address-delivery-ucxf-fecha-envio").val((fechahoy.getDate()<10 ? '0' : '')+fechahoy.getDate()+'-'+(fechahoy.getMonth()<10 ? '0' : '')+(fechahoy.getMonth()+1)+'-'+fechahoy.getFullYear());
+				}else if(n == 6){
+					fechahoy.setDate(fechahoy.getDate() + 2);
+					$("#edit-panes-delivery-address-delivery-ucxf-fecha-envio").val((fechahoy.getDate()<10 ? '0' : '')+fechahoy.getDate()+'-'+(fechahoy.getMonth()<10 ? '0' : '')+(fechahoy.getMonth()+1)+'-'+fechahoy.getFullYear());
+				}
+
+				var tiempo = new Date();
+				var hora = tiempo.getHours();
+				if(hora < 12){
+								var rangomanana = $('.rangomanana').text();
+								if(rangomanana == ""){
+												rangomanana = 4;
+								}
+								var comprasactuales = $('.view-order .views-row .field-content').text();
+								if(rangomanana > 4){
+												if( comprasactuales >= rangomanana){
+																alert('Lo sentimos ya se ha llegado al limite de compras por la ma\u00f1ana.');
+																window.location.replace("hhttps://www.lademoteca.com/cart");
+												}
+								}
+								else if(rangomanana < 4){
+												if( comprasactuales >= rangomanana){
+																alert('Lo sentimos ya se ha llegado al limite de compras por la ma\u00f1ana.');
+																window.location.replace("https://www.lademoteca.com/cart");
+												}
+								}
+								else if( comprasactuales == '4'){
+												alert('Lo sentimos ya se ha llegado al limite de compras por la ma\u00f1ana.');
+												window.location.replace("https://www.lademoteca.com/cart");
+								}
+				} else if(hora > 12){
+								var rangotarde = $('.rangotarde').text();
+								if(rangotarde == ""){
+												rangotarde = 4;
+								}
+								var comprasactuales = $('.view-order .views-row .field-content').text();
+								
+								if(rangotarde > 4){
+												if( comprasactuales >= rangotarde){
+																alert('Lo sentimos ya se ha llegado al limite de compras por la tarde.');
+																window.location.replace("https://www.lademoteca.com/cart");
+												}
+								}
+								else if(rangotarde < 4){
+												if( comprasactuales >= rangotarde){
+																alert('Lo sentimos ya se ha llegado al limite de compras por la tarde.');
+																window.location.replace("https://www.lademoteca.com/cart");
+												}
+								}
+								else if( comprasactuales == '4'){
+												alert('Lo sentimos ya se ha llegado al limite de compras por la tarde.');
+												window.location.replace("https://www.lademoteca.com/cart");
+								}
+				}
+				$('.datos-envio-padre option[value="tarde"]').prop('disabled', true);
+				$('.datos-envio-padre option[value="manana"]').prop('disabled', true);
+				
+				//$('#edit-panes-delivery-address-delivery-ucxf-hora-envio').on('focus', function(){
+				   //validarhora();
+				//});
+				
+				if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+				    var is_safari = navigator.userAgent.indexOf('Safari');
+							//	alert(is_safari);
+				    if(is_safari == '120' || is_safari == '122'){
+												$('#edit-panes-delivery-address-delivery-ucxf-hora-envio').hover(function(){
+																validarhora();
+												});
+				    }else{
+				        $('#edit-panes-delivery-address-delivery-ucxf-hora-envio').on('focus', function(){
+																validarhora();
+												});
+				    }
+				}else{
+								$('#edit-panes-delivery-address-delivery-ucxf-hora-envio').on('focus', function(){
+											validarhora();
+								});
+				}
+				
+				function validarhora(){
+								//Regla 1 (No pueden pedir para el mismo dia en la tarde despues de las 11am de ese mismo dia)
+								var fechaingresada = $('#edit-panes-delivery-address-delivery-ucxf-fecha-envio').val();
+								
+								var date = new Date();
+                                var today = date.getTime();
+                                var nextday = new Date(today+86400000);
+                                var nextday2 = new Date(today+172800000);
+                                
+                                var hoy = (date.getDate()<10 ? '0' : '')+date.getDate()+'-'+(date.getMonth()<10 ? '0' : '')+(date.getMonth()+1)+'-'+date.getFullYear()
+                                var manana = (nextday.getDate()<10 ? '0' : '')+nextday.getDate()+'-'+(nextday.getMonth()<10 ? '0' : '')+(nextday.getMonth()+1)+'-'+nextday.getFullYear();
+                                var pasado = (nextday2.getDate()<10 ? '0' : '')+nextday2.getDate()+'-'+(nextday2.getMonth()<10 ? '0' : '')+(nextday2.getMonth()+1)+'-'+nextday2.getFullYear();
+                             
+								if(hoy == fechaingresada){
+												if(hora >= 10){
+												    console.log('log');
+																if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+																				$('.nosepuede').css({height: "40px", "border-bottom": "5px solid red", padding: "5px 0"});
+																} else{ $('.nosepuede').css({height: "20px", "border-bottom": "5px solid red", padding: "5px 0"}); };
+												    $('.datos-envio-padre option[value="tarde"]').attr('disabled', true);
+                $('.datos-envio-padre option[value="manana"]').attr('disabled', true);
+												} else if(hora < 10){ $('.datos-envio-padre option[value="tarde"]').prop('disabled', false);
+												     $('.datos-envio-padre option[value="manana"]').prop('disabled', true);
+												     $('.nosepuede').css({height: "0px", "border-bottom": "0px solid red", padding: "0"});
+												}
+								}
+								
+								//Regla 2 (No se puede depir para el dia siguiente en la manana despues de las 4pm del dia actual)
+								if(fechaingresada == manana){
+									if(hora < 16){
+											$('.datos-envio-padre option[value="tarde"]').prop('disabled', false);
+											$('.datos-envio-padre option[value="manana"]').prop('disabled', false);
+											$('.nosepuede').css({height: "0px", "border-bottom": "0px solid red", padding: "0"});
+									} else{
+									    $('.datos-envio-padre option[value="manana"]').prop('disabled', true);
+									    $('.datos-envio-padre option[value="tarde"]').prop('disabled', false).attr('selected', 'selected');
+									    $('.nosepuede').css({height: "0px", "border-bottom": "0px solid red", padding: "0"});
+									}
+								}
+								
+								//Regla 4 (Puede comprar a cualquier hora ya despues de 2 dias)
+								if(fechaingresada == pasado && fechaingresada != hoy && fechaingresada != manana){
+												$('.datos-envio-padre option[value="manana"]').prop('disabled', false);
+												$('.datos-envio-padre option[value="tarde"]').prop('disabled', false);
+												$('.nosepuede').css({height: "0"});
+								}
+								if(fechaingresada != pasado && fechaingresada != hoy && fechaingresada != manana){
+												$('.datos-envio-padre option[value="manana"]').prop('disabled', false);
+												$('.datos-envio-padre option[value="tarde"]').prop('disabled', false);
+												$('.nosepuede').css({height: "0"});
+								}
+				};
+}
+
+
+
+//Precios por cantidad o atributo
+$('.node-product .add-to-cart select option').each( function(){
+				var texto = $(this).text();
+				$(this).attr('atributo',texto);
+				
+				respuesta1 = texto.split(", ");
+				if(typeof respuesta1[1] != 'undefined'){
+								$(this).text(respuesta1[0]);
+				}
+});
+
+var precioproducto = $('.node-product .display-price .uc-price').text().split('Q');
+$('body.node-type-product').prepend('<div class="precio-producto" style="display: none;">'+precioproducto[1]+'</div>');
+$('.node-product .add-to-cart select').change( function(){
+    var cantidadatributos = $('.add-to-cart .attributes .attribute').length;
+    var cantidadseleccionada = $('.add-to-cart .form-item-qty select option:selected').val();
+    var cantidad = cantidadatributos + 1;
+    var i;
+    var arreglosuma = [];
+    var arregloresta = [];
+    for (i = 1; i < cantidad; ++i) {
+								var respuesta = $('.add-to-cart .attributes .attribute:nth-child('+i+') select option:selected').attr('atributo');
+								if(respuesta != '- Seleccionar -'){
+												respuesta1 = respuesta.split(", ");
+												if(typeof respuesta1[1] != 'undefined'){
+																respuesta2 = respuesta1[1];
+																respuesta2 = respuesta2.split('Q');
+																respuestafinal = respuesta2[0];
+																if(respuestafinal == '+'){
+																				arreglosuma.push(respuesta2[1]);
+																}
+																else if(respuestafinal == '-'){
+																				arregloresta.push(respuesta2[1]);
+																}
+												}
+								}
+				}
+							
+				var totalsuma = 0;
+				for (var i = 0; i < arreglosuma.length; i++) {
+								totalsuma += arreglosuma[i] << 0;
+				}
+				var totalresta = 0;
+				for (var i = 0; i < arregloresta.length; i++) {
+								totalresta += arregloresta[i] << 0;
+				}
+				var totalgeneral = parseInt(totalsuma) - parseInt(totalresta);
+				var cambiarprecioa = $('.precio-producto').text();
+				var total = (parseInt(cambiarprecioa) + parseInt(totalgeneral)) * parseInt(cantidadseleccionada);
+				
+				if(!$('.node-product .display-price').is(':visible')){
+								$('.node-product .cost .uc-price').text('Q '+ total + '.00');
+				} else{
+								$('.node-product .display-price .uc-price').text('Q '+ total + '.00');
+				}
+});
+
+
+//Categorias Ocultar las que no tienen opciones
+Drupal.behaviors.HideSubcategorias = {
+attach: function(context, settings) {
+   $('#views-exposed-form-productos-de-categoria-block-1 .views-exposed-widgets .views-exposed-widget').each( function(){
+        if($('select option', this).length < 2 ){
+            $(this).hide();
+        }
+    });
+}
+}
+$('#views-exposed-form-productos-de-categoria-block-1 .views-exposed-widgets .views-exposed-widget').each( function(){
+    if($('select option', this).length < 2 ){
+        $(this).hide();
+    }
+});
+
+
+//Esta compra es un regalo
+$('.uc-cart-checkout-form #comments-pane .form-type-textarea').prepend('<div class="valores-regalo"><div clas="input1"><input type="radio" name="radio" value="Si">Si</div><div clas="input2"><input type="radio" name="radio" value="No">No</div></div>');
+
+
+//Checkout Monto Adicional Condiciones
+$('#edit-panes-delivery-address-delivery-ucxf-hora-envio').change(function() {
+				
+    var d = new Date();
+    var month = d.getMonth()+1;
+    var day = d.getDate();
+    
+    var fechaactual = (day<10 ? '0' : '')+ day+'-'+(month<10 ? '0' : '') + month+ '-' +d.getFullYear();
+    var fechaingresada = $('#edit-panes-delivery-address-delivery-ucxf-fecha-envio').val();
+    var fechaingresada1 = fechaingresada.split('-');
+    var fechaingresada2 = fechaingresada1[2]+'-'+fechaingresada1[1]+'-'+fechaingresada1[0]+'T00:00:00';
+    var hora = d.getHours();
+    
+    var subtotal = $('#uc-order-total-preview .line-item-subtotal .uc-price').text();
+    subtotal = subtotal.substr(1);
+				
+    if($(this).val() == ''){
+        rango = 'Por la Ma%';
+    } else if($(this).val() == 'manana'){
+        $('.datos-envio-padre option').attr('selected', false);
+        $('.datos-envio-padre option[value="manana"]').attr('selected', 'selected');
+         rango = 'Por la Ma%';
+    }else{
+        $('.datos-envio-padre option').attr('selected', false);
+        $('.datos-envio-padre option[value="tarde"]').attr('selected', 'selected');
+         rango = 'Por la Tarde%';
+    }
+				
+    $('body').prepend('<div class="leyendo">Cargando Datos</div>');
+     //Validar si se pueden realizar pedidos para este dia
+      $.ajax({
+          context: this,
+          url: "https://www.lademoteca.com/ajax_file/verificador.php",
+          type: 'POST',
+          data: 'fecha=' + fechaingresada2 +'&rango=' + rango +'&fechaaconsultar=' + fechaingresada,
+          success: function(result){
+												  $('.leyendo').remove();
+														
+              var opciones = result.split('/');
+              var limite = opciones[0];
+              var comprados = opciones[1];
+              
+              if( limite == ''){
+                limite = '4';
+              }
+              
+              if( limite == comprados){
+																$("#edit-panes-delivery-address-delivery-ucxf-fecha-envio").val('');
+                alert('Lo sentimos, se ha llegado al limite de compras para este dia con el rango seleccionado, por favor intente otra fecha.');
+              }
+              
+          }//end success
+      });//end ajax
+     
+     
+    //Validar si el pedido es menor a 150 y es con fecha actual
+    if(subtotal < 200 && fechaingresada == fechaactual){
+        if(hora > 10 && hora < 16){
+            alert('No se pueden realizar pedidos para esta fecha y hora');
+        } else if(hora < 10){
+            if($(this).val() == 'manana'){
+                alert('No se pueden realizar pedidos para esta fecha y hora');
+            }else{
+            	
+            	$('input[value="flatrate_9---0"]').click();
+            	$('input[value="flatrate_9---0"]').trigger('mousedown');
+            	$('#edit-panes-quotes-quote-button').click();
+            	$('input[value="Pulsar para calcular los gastos de envío"]').trigger('mousedown');
+        	}
+        }else if(hora == 10){
+        	$('.datos-envio-padre option[value="manana"]').attr('selected', false);
+        	$('.datos-envio-padre option[value="tarde"]').attr('selected', false);
+            alert('No se pueden realizar pedidos para esta fecha y hora');
+        }
+    }
+    //Validar si el pedido es menor a 150
+    else if(subtotal < 200){
+        
+    	$('input[value="flatrate_10---0"]').click();
+    	$('input[value="flatrate_10---0"]').trigger('mousedown');
+    	$('#edit-panes-quotes-quote-button').click();
+    	$('input[value="Pulsar para calcular los gastos de envío"]').trigger('mousedown');
+    }
+    //Validar si el pedido es para fecha actual
+    else if(fechaingresada == fechaactual){
+		
+    	$('input[value="flatrate_12---0"]').click();
+    	$('input[value="flatrate_12---0"]').trigger('mousedown');
+    	$('#edit-panes-quotes-quote-button').click();
+    	$('input[value="Pulsar para calcular los gastos de envío"]').trigger('mousedown');
+    }
+    else if( fechaingresada != fechaactual && subtotal > 200){
+       	
+    	$('input[value="flatrate_11---0"]').click();
+    	$('input[value="flatrate_11---0"]').trigger('mousedown');
+    	$('#edit-panes-quotes-quote-button').click();
+    	$('input[value="Pulsar para calcular los gastos de envío"]').trigger('mousedown');
+    }
+});
+
+$('#edit-panes-delivery-address-delivery-ucxf-fecha-envio').change(function(e) {
+    var d = new Date();
+    var month = d.getMonth()+1;
+    var day = d.getDate();
+    
+    var fechaactual = (day<10 ? '0' : '')+ day+'-'+(month<10 ? '0' : '') + month+ '-' +d.getFullYear();
+    var fechamanana = d.setDate(d.getDate() + 1);
+	fechamanana	= (d.getDate()<10 ? '0' : '')+d.getDate()+'-'+(d.getMonth()<10 ? '0' : '')+(d.getMonth()+1)+'-'+d.getFullYear();
+    var fechaingresada = $('#edit-panes-delivery-address-delivery-ucxf-fecha-envio').val();
+
+    if(fechaingresada == fechamanana){
+    	$('.datos-envio-padre option[value="manana"]').prop('disabled', true).removeAttr('selected');;
+		$('.datos-envio-padre option[value="tarde"]').prop('disabled', false).attr('selected', 'selected');
+		$('.nosepuede').css({height: "0px", "border-bottom": "0px solid red", padding: "0"});
+    }
+  
+    var rango = $('#edit-panes-delivery-address-delivery-ucxf-hora-envio option:selected').val();
+    var fechaingresada1 = fechaingresada.split('-');
+    var fechaingresada2 = fechaingresada1[2]+'-'+fechaingresada1[1]+'-'+fechaingresada1[0]+'T00:00:00';
+    var hora = d.getHours();
+    var subtotal = $('#uc-order-total-preview .line-item-subtotal .uc-price').text();
+    subtotal = subtotal.substr(1);
+ 
+    if(rango == ''){
+        rango = 'Por la Ma%';
+    } else if(rango == 'manana'){
+         rango = 'Por la Ma%';
+    }else{
+         rango = 'Por la Tarde%';
+    }
+    
+    $('body').prepend('<div class="leyendo">Cargando Datos</div>');
+      //Validar si se pueden realizar pedidos para este dia
+      $.ajax({
+          context: this,
+          url: "https://www.lademoteca.com/ajax_file/verificador.php",
+          type: 'POST',
+          data: 'fecha=' + fechaingresada2 +'&rango=' + rango +'&fechaaconsultar=' + fechaingresada,
+          success: function(result){
+			  $('.leyendo').remove();
+												
+              var opciones = result.split('/');
+              var limite = opciones[0];
+              var comprados = opciones[1];
+              if( limite == ''){
+                  limite = '4';
+              }
+              
+              if( limite == comprados){
+                  alert('Lo sentimos, se ha llegado al limite de compras para este dia con el rango seleccionado, por favor intente otra fecha.');
+                  $("#edit-panes-delivery-address-delivery-ucxf-fecha-envio").val('');
+              }
+              
+          }//end success
+      });//end ajax
+      
+      
+        //Validar si el pedido es menor a 150 y es con fecha actual
+        if(subtotal < 200 && fechaingresada == fechaactual){
+            if(hora > 10 && hora < 16){
+            	$('.datos-envio-padre option:selected').removeAttr('selected');
+            	$("#edit-panes-delivery-address-delivery-ucxf-fecha-envio").val('');
+                alert('No se pueden realizar pedidos para esta fecha y hora');
+            } else if(hora < 10){
+            	$('.datos-envio-padre option[value="manana"]').attr('selected');
+				$('.datos-envio-padre option[value="tarde"]').attr('selected', 'selected');
+            	
+
+            	$('input[value="flatrate_9---0"]').click();
+            	$('input[value="flatrate_9---0"]').trigger('mousedown');
+            	$('#edit-panes-quotes-quote-button').click();
+            	$('input[value="Pulsar para calcular los gastos de envío"]').trigger('mousedown');
+            }
+            else if(hora == 10){
+	        	$('.datos-envio-padre option[value="manana"]').attr('selected', false);
+	        	$('.datos-envio-padre option[value="tarde"]').attr('selected', false);
+	            alert('No se pueden realizar pedidos para esta fecha y hora');
+	        }
+        }
+        //Validar si el pedido es menor a 150
+        else if(subtotal < 200){
+        	$('input[value="flatrate_10---0"]').click();
+        	$('input[value="flatrate_10---0"]').trigger('mousedown');
+            $('#edit-panes-quotes-quotes-quote-option-flatrate-10-0').click();
+        }
+        //Validar si el pedido es para fecha actual
+        else if(fechaingresada == fechaactual && hora > 10 && rango == 'Por la Ma%' || fechaingresada == fechaactual && hora > 10 && rango == 'Por la Tarde%'){
+            $('.datos-envio-padre option:selected').removeAttr('selected');
+            $("#edit-panes-delivery-address-delivery-ucxf-fecha-envio").val('');
+            alert('No se pueden realizar pedidos para esta fecha y hora');
+        }
+        //Validar si el pedido es para fecha actual
+        else if(fechaingresada == fechaactual){
+			$('.datos-envio-padre option[value="manana"]').attr('selected');
+			$('.datos-envio-padre option[value="tarde"]').attr('selected', 'selected');
+            
+            $('input[value="flatrate_12---0"]').click();
+            $('input[value="flatrate_12---0"]').trigger('mousedown');
+            $('#edit-panes-quotes-quote-button').click();
+            $('input[value="Pulsar para calcular los gastos de envío"]').trigger('mousedown');
+        }
+        else if( fechaingresada != fechaactual && subtotal > 200){
+           	$('input[value="flatrate_11---0"]').click();
+           	$('input[value="flatrate_11---0"]').trigger('mousedown');
+           	$('#edit-panes-quotes-quote-button').click();
+           	$('input[value="Pulsar para calcular los gastos de envío"]').trigger('mousedown');
+        }
+        
+});
+
+
+
+if(pathname == "/cart/checkout"){
+	//Validar si el pedido es menor a 150 y es con fecha actual
+	var d = new Date();
+	var month = d.getMonth()+1;
+	var day = d.getDate();
+	var fechaactual = (day<10 ? '0' : '')+ day+'-'+(month<10 ? '0' : '') + month+ '-' +d.getFullYear();
+	var fechaingresada = $('#edit-panes-delivery-address-delivery-ucxf-fecha-envio').val();
+	var rango = $('#edit-panes-delivery-address-delivery-ucxf-hora-envio option:selected').val();
+	var fechaingresada1 = fechaingresada.split('-');
+	var fechaingresada2 = fechaingresada1[2]+'-'+fechaingresada1[1]+'-'+fechaingresada1[0]+'T00:00:00';
+	var hora = d.getHours();
+	var subtotal = $('#uc-order-total-preview .line-item-subtotal .uc-price').text();
+	subtotal = subtotal.substr(1);
+	if(subtotal < 200 && fechaingresada == fechaactual){
+	    if(hora > 10 && hora < 16){
+	    	$('.datos-envio-padre option:selected').removeAttr('selected');
+	    	$("#edit-panes-delivery-address-delivery-ucxf-fecha-envio").val('');
+	        alert('No se pueden realizar pedidos para esta fecha y hora');
+	    } else if(hora < 10){
+	    	$('.datos-envio-padre option[value="manana"]').attr('selected');
+			$('.datos-envio-padre option[value="tarde"]').attr('selected', 'selected');
+	    	$('input[value="flatrate_9---0"]').click();
+	    	$('input[value="flatrate_9---0"]').trigger('mousedown');
+	    	$('#edit-panes-quotes-quote-button').click();
+	    	$('input[value="Pulsar para calcular los gastos de envío"]').trigger('mousedown');
+	    }
+	    else if(hora == 10){
+        	$('.datos-envio-padre option[value="manana"]').attr('selected', false);
+        	$('.datos-envio-padre option[value="tarde"]').attr('selected', false);
+            alert('No se pueden realizar pedidos para esta fecha y hora');
+        }
+	}
+	//Validar si el pedido es menor a 150
+	else if(subtotal < 200){
+		$('input[value="flatrate_10---0"]').click();
+		$('input[value="flatrate_10---0"]').trigger('mousedown');
+	    $('#edit-panes-quotes-quotes-quote-option-flatrate-10-0').click();
+	}
+	//Validar si el pedido es para fecha actual
+	else if(fechaingresada == fechaactual && hora > 10 && rango == 'Por la Ma%' || fechaingresada == fechaactual && hora > 10 && rango == 'Por la Tarde%'){
+	    $('.datos-envio-padre option:selected').removeAttr('selected');
+	    $("#edit-panes-delivery-address-delivery-ucxf-fecha-envio").val('');
+	    alert('No se pueden realizar pedidos para esta fecha y hora');
+	}
+	//Validar si el pedido es para fecha actual
+	else if(fechaingresada == fechaactual){
+		$('.datos-envio-padre option[value="manana"]').attr('selected');
+		$('.datos-envio-padre option[value="tarde"]').attr('selected', 'selected');
+	    $('input[value="flatrate_12---0"]').click();
+	    $('input[value="flatrate_12---0"]').trigger('mousedown');
+	    $('#edit-panes-quotes-quote-button').click();
+	    $('input[value="Pulsar para calcular los gastos de envío"]').trigger('mousedown');
+	}
+	else if( fechaingresada != fechaactual && subtotal > 200){
+	   	$('input[value="flatrate_11---0"]').click();
+	   	$('input[value="flatrate_11---0"]').trigger('mousedown');
+	   	$('#edit-panes-quotes-quote-button').click();
+	   	$('input[value="Pulsar para calcular los gastos de envío"]').trigger('mousedown');
+	}
+}
+
+
+
+
+
+
+$('.uc-cart-checkout-form .form-actions .form-submit').wrapAll('<div class="contenido-envios" />');
+
+if(pathname.slice(0, 5) == '/user'){
+		var IdUser = $('body').attr('class').split(' ');
+		IdUser = IdUser[6].split('-');
+		var menuprivado = $('#menu-privado a').attr('href');
+		$('#menu-privado a').attr('href', menuprivado+IdUser[2]);
+}
+
+
+//Filtro por Proveedores
+$('.view-buscar-por-proveedor .view-content ul').each(function() {
+  var select = $(document.createElement('select')).insertBefore($(this).hide());
+  $('>li a', this).each(function() {
+      var a = $(this).click(function() {
+        window.location.href = this.href;
+      }),
+      option = $(document.createElement('option')).appendTo(select).val(this.href).html($(this).html()).click(function() {
+          a.click();
+      });
+  });
+});
+$('.view-buscar-por-proveedor .view-content select').change(function() { window.location = $(this).find("option:selected").val(); });
+$('.view-buscar-por-proveedor .view-content select').prepend('<option selected>Buscar por Proveedor</option>');
+
+/****
+//Fixed header Responsive
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+$(window).scroll(function(){
+var sticky = $('#menusuperior'),
+scroll = $(window).scrollTop();
+if (scroll >= 50) sticky.addClass('fixed');
+else sticky.removeClass('fixed');
+});
+}
+*******/
+});
+}(jQuery));
+
+
+
+
+
+
+

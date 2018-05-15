@@ -5,48 +5,65 @@
 <head>
 <title>HerreSer</title>
 <meta charset="utf-8" />
-<link rel="stylesheet" href="estilos.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="C:\Users\Paola\Documents\paginaherreria\estilos.css" />
+
 <link rel="shortcut icon" href="/favicon.ico" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
  
 <body>
-    <nav>
+  <div id="LogoHerreSer"> <img src="imagenes/LogoHerreSer.png" alt="Logo de HerreSer">    </div>
+      <nav id="Botonesinicio">
       <a href="#inicio">INICIO</a></li>
 
       <a href="#productos">PRODUCTOS</a>
 
-      <a href="#conocenos">CONOCENOS</a>
+      <a href="empresa.html">CONOCENOS</a>
 
-      <a href="#contacto">CONTACTO</a>
+      <a href="contacto.html">CONTACTO</a>
 
-      <a href="#inicie sesion">INICIE SESION</a>
+      <a href="iniciosesion.html">INICIE SESION</a>
+
+
     </nav>
     <header>
-       <h1 id="inicio">Bienvenidos a HerreSer</h1>
-       <p > Si necesitas Seguridad + Diseño estás en el lugar indicado
-        <br>
-        Asesoramiento, diseño y fabricación a tu alcance
-      </p>
-      <h3> TRABAJOS GARANTIZADOS </h3>
-      <ul>
-        <li> Realizamos trabajos en tiempo y forma </li>
-        <li> Seguimos estándares de calidad</li> 
-        <li> Precios excepcionales </li>
+       <h1 id="inicio">Bienvenidos a HerreSer</h1> 
+
+
+      <div class="contenedor">
+      <img src="imagenes/rejacorazon.jpg"  height="400px" width="100%" />
+     
+      <div class="centrado"> <p>Si necesitas Seguridad + Diseño estás en el lugar indicado        <br>
+               Asesoramiento, diseño y fabricación a tu alcance </p></div>
+    </div>
+
+       
+           
+      <h3 class="instituc"> TRABAJOS GARANTIZADOS </h3>
+      <ul id="caract">
+        <li class="item"> Realizamos trabajos en tiempo y forma </li>
+        <li class="item"> Seguimos estándares de calidad</li> 
+        <li class="item"> Precios excepcionales </li>
       </ul>
 
     </header>
     <section>
        <article>
            <h2 id="productos">PRODUCTOS</h2>
-            <table border> 
-              <tr> 
-                <td> Para el hogar</td>
-                <td> Para empresas</td>
-              </tr>
-            </table>
-
-           <p> SOLDADURAS </p>
+<p>
+  <a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Para el hogar </a>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Para empresas</button>
+  
+</p>
+<div class="row">
+  <div class="col">
+    <div class="collapse multi-collapse" id="multiCollapseExample1">
+      <div class="card card-body">
+        <p> SOLDADURAS </p>
            <p> REJAS </p>
            <ul>
             <li> Rejas para frentes</li>
@@ -54,8 +71,16 @@
             <li> Puerta de rejas</li>
             </ul>
        </article>
-
-       <article> 
+    
+      </div>
+    </div>
+  </div>
+</div>
+          <!--es el texto del segundo desplegable-->
+          <div class="col">
+    <div class="collapse multi-collapse" id="multiCollapseExample2">
+      <div class="card card-body">
+        <article> 
         <p> TINGLADOS </p>
         <p>Rejas para frente de comercio</p>
         <ul>
@@ -64,41 +89,61 @@
         </ul>
 
        </article>
+      </div>
+    </div>
+  </div>
+</div>   
+              
+       
     </section>
-    <h2 id="conocenos">CONOCENOS </h2>
-      
-     <table border>
-     <tr> 
-        <td><a href=""> Quienes somos </a></td>
-        <td> <a href=""> Distribucion </a></td>
-        <td><a href=""> Ponete en contacto </a> </td>
-     </tr> <!--es la primer fila-->
+   
+   <p>CONOCENOS</p>
 
-     <tr>
-        <td> Conoce a nuestro personal </td> 
-        <td>  Conoce el proceso </td>
-        <td> Mantenete en contacto </td>
-     </tr>  
+   <div class="row">
+    <div class="col-sm-4">
+   <!--comienzo del boton que dice "ver mas"-->   
+   <div class="jumbotron">
+  <p class="display-4">QUIENES SOMOS </p>
+  <p class="lead">
+    Conoce a nuestro personal
+  </p>
+   <a class="btn btn-primary btn-lg" href="empresa.html" role="button">Ver más</a>
+</div>
+</div> <!--fin del div de la class col 4-->
+<div class="col-sm-4">
+<!--comienzo del proximo boton-->
+<div class="jumbotron">
+  <p class="display-4">DISTRIBUCIÓN </p>
+  <p class="lead">
+    Conoce el proceso 
+  </p> 
+  <a class="btn btn-primary btn-lg" href="procesocompra.html" role="button">Ver más</a>
+</div>
+</div> <!--fin del div de la class 4-->
 
-     </table>
+<div class="col-sm-4">
+<!--comienzo del ultimo boton -->
+<div class="jumbotron">
+  <p class="display-4">PONETE EN CONTACTO </p>
+  <p class="lead">
+    Mantenete en contacto
+  </p> 
+  <a class="btn btn-primary btn-lg" href="contacto.html" role="button">Ver más</a>
+
+</div>
+ <!--fin de botones de ver mas-->   
+</div> <!--fin de div de la class4-->
+</div> <!-- fin de div que contiene las class 4-->
+
+
      
-<form>
+<!-- form usando HTML <form>
   <h2 id="inicie sesion"> INICIE SESIÓN</h2>
   <input type="text" placeholder="Correo Electrónico" required="Requerido"> <br>
   <input type="password" name="Contraseña" placeholder="Contraseña" required="Requerido"> <br>
    <input type="submit" value="INICIAR SESION"> <br>
-    ¿Tiene problemas para iniciar sesión?
+    ¿Tiene problemas para iniciar sesión? -->
 
-    <h2>CREAR UNA CUENTA</h2>
-    <input type="text" name="Nombre" placeholder="Nombre"> <br>
-    <input type="text" name="Apellido" placeholder="Apellido"> <br>
-    <input type="text" name="Dirección" placeholder="Dirección"> <br>
-    <input type="number" name="Teléfono" placeholder="Telefono con código de área"> <br>
-    <input type="text" name="Correo electronico" placeholder="Correo electrónico"> <br>
-    <input type="password" name="contraseña" placeholder="Contraseña"> <br>
-    <button>Registrate</button> <!--type="submit" value="REGISTRARTE">-->
-
-</form>
      
    <footer>
         Seguinos en Facebook, Twitter, Instagram
